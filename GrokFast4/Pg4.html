@@ -1,0 +1,205 @@
+#Pg4.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GO WORK NOW</title>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      height: 100vh;
+      background: #000000;
+      color: #ff1493;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+      image-rendering: pixelated;
+      cursor: none;
+      user-select: none;
+    }
+
+    /* Large custom cursor – tall thin rectangle 60×180 px */
+    .custom-cursor {
+      position: fixed;
+      width: 60px;
+      height: 180px;
+      background: #e1c0e0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-15px, -45px);
+      mix-blend-mode: difference;
+      border: 5px solid #ff00aa;
+      box-shadow: 0 0 30px #ff69b4;
+      animation: wobbleTall 1.8s infinite;
+    }
+
+    @keyframes wobbleTall {
+      0%, 100% { transform: translate(-15px, -45px) rotate(0deg); }
+      50%      { transform: translate(-22px, -38px) rotate(14deg); }
+    }
+
+    /* Trail effect */
+    .cursor-trail {
+      position: fixed;
+      width: 60px;
+      height: 180px;
+      background: #e1c0e0;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      opacity: 0;
+      border: 4px solid #ff00aa;
+    }
+
+    .container {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-square {
+      width: 80%;
+      max-width: 900px;
+      aspect-ratio: 1 / 1;
+      background: rgba(255,255,255,0.08);
+      border: 12px double #ff1493;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6vh;
+      box-shadow: 0 0 60px #ff00aa;
+      animation: glitchShake 0.8s infinite, colorCycle 3s infinite;
+    }
+
+    .main-text {
+      font-size: 8rem;
+      color: #ffff00;
+      text-shadow: 0 0 40px #ff4500, 0 0 80px #ff1493;
+      animation: pulseScale 1.4s infinite alternate, flicker 0.6s infinite;
+    }
+
+    /* End screen popup */
+    .end-popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.98);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      flex-direction: column;
+      gap: 8vh;
+      cursor: pointer; /* so it feels clickable */
+    }
+
+    .end-popup.visible {
+      display: flex;
+    }
+
+    .end-text {
+      font-size: 14rem;
+      color: #ff0000;
+      text-shadow: 0 0 60px #ff4500;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      animation: flicker 0.4s infinite;
+    }
+
+    .end-subtext {
+      font-size: 7rem;
+      color: #ffff00;
+      text-shadow: 0 0 40px #ff1493;
+    }
+
+    @keyframes glitchShake {
+      0%   { transform: translate(0,0) skew(0deg,0deg); }
+      10%  { transform: translate(-12px,8px) skew(14deg,-10deg); }
+      20%  { transform: translate(14px,-10px) skew(-16deg,12deg); }
+      35%  { transform: translate(-8px,10px) skew(0deg,0deg); }
+      50%  { transform: translate(0,0) skew(0deg,0deg); }
+      100% { transform: translate(0,0) skew(0deg,0deg); }
+    }
+
+    @keyframes colorCycle {
+      0%   { border-color: #ff1493; box-shadow: 0 0 60px #ff00aa; }
+      25%  { border-color: #00ffff; box-shadow: 0 0 60px #00bfff; }
+      50%  { border-color: #ffff00; box-shadow: 0 0 60px #ff4500; }
+      75%  { border-color: #9932cc; box-shadow: 0 0 60px #ff69b4; }
+      100% { border-color: #ff1493; box-shadow: 0 0 60px #ff00aa; }
+    }
+
+    @keyframes pulseScale {
+      from { transform: scale(0.9); }
+      to   { transform: scale(1.15); }
+    }
+
+    @keyframes flicker {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor -->
+  <div class="custom-cursor" id="cursor"></div>
+
+  <div class="container">
+    <div class="main-square">
+      <div class="main-text">Go work now</div>
+    </div>
+  </div>
+
+  <!-- Final screen – click anywhere to close tab -->
+  <div class="end-popup" id="endPopup">
+    <div class="end-text">don't fart</div>
+    <div class="end-subtext">end of game</div>
+  </div>
+
+  <script>
+    // Cursor + trail
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+
+      for (let i = 1; i <= 5; i++) {
+        setTimeout(() => {
+          const trail = document.createElement('div');
+          trail.className = 'cursor-trail';
+          trail.style.left = e.clientX + 'px';
+          trail.style.top  = e.clientY + 'px';
+          trail.style.opacity = (0.5 - i * 0.09);
+          trail.style.transform = `scale(${1 - i * 0.18}) rotate(${Math.random() * 20 - 10}deg)`;
+          document.body.appendChild(trail);
+          setTimeout(() => trail.remove(), 900);
+        }, i * 50);
+      }
+    });
+
+    // Show end screen on any click or keypress
+    function showEndScreen() {
+      const popup = document.getElementById('endPopup');
+      popup.classList.add('visible');
+
+      // Click anywhere on the end screen → close tab
+      popup.addEventListener('click', () => {
+        window.close();  // Attempts to close the current tab/window
+      });
+
+      // Also close on any key press while end screen is visible
+      document.addEventListener('keydown', () => {
+        window.close();
+      }, { once: true });
+    }
+
+    // Trigger end screen on first interaction
+    document.addEventListener('click', showEndScreen, { once: true });
+    document.addEventListener('keydown', showEndScreen, { once: true });
+  </script>
+</body>
+</html>

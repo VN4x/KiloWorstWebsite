@@ -1,0 +1,286 @@
+#index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WORST LOADING NIGHTMARE</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Frijole&family=Nosifer&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      height: 100vh;
+      background: #000; /* true black for contrast */
+      color: #608040;
+      font-family: 'Special Elite', cursive;
+      overflow: hidden;
+      cursor: none;
+      image-rendering: pixelated;
+    }
+
+    .custom-cursor {
+      position: fixed;
+      width: 80px;
+      height: 140px;
+      background: #e0c0e0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-25px, -25px);
+      mix-blend-mode: difference;
+      border: 6px solid #802080;
+      box-shadow: 0 0 30px #e0c040;
+      animation: wobble 1.3s infinite;
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: translate(-25px, -25px) rotate(0deg); }
+      50%      { transform: translate(-35px, -15px) rotate(15deg); }
+    }
+
+    .eyes {
+      position: absolute;
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .eyes img {
+      width: 420px;
+      height: auto;
+      image-rendering: pixelated;
+    }
+
+    .loading-bar {
+      position: absolute;
+      top: 36%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72%;
+      height: 60px;
+      background: #000;
+      border: 10px solid #802080;
+      box-shadow: 0 0 35px #e0c040;
+    }
+
+    .marquee-text {
+      position: absolute;
+      top: 48%;
+      left: 0;
+      white-space: nowrap;
+      font-size: 4rem; /* bigger for visibility */
+      font-weight: bold;
+      color: #608040;
+      -webkit-text-stroke: 3px #80a060;
+      text-shadow: 0 0 20px #e0c040;
+      font-family: 'Frijole', cursive;
+      z-index: 5;
+      pointer-events: none;
+      animation: chaoticRightToLeft 15s steps(12) infinite;
+    }
+
+    .marquee-text .highlight {
+      font-family: 'Nosifer', cursive;
+      color: #ff0044;
+      -webkit-text-stroke: 2.5px #ff4488;
+      animation: flash-size 0.9s infinite alternate;
+      pointer-events: all;
+    }
+
+    @keyframes chaoticRightToLeft {
+      0%    { transform: translateX(100%); }
+      20%   { transform: translateX(80%); }
+      35%   { transform: translateX(10%); }
+      50%   { transform: translateX(40%); animation-play-state: paused; }
+      65%   { transform: translateX(-20%); }
+      80%   { transform: translateX(-60%); }
+      90%   { transform: translateX(-100%); }
+      100%  { transform: translateX(-150%); }
+    }
+
+    @keyframes flash-size {
+      from { font-size: 0.4em; }
+      to   { font-size: 2.1em; }
+    }
+
+    .color-squares {
+      position: absolute;
+      bottom: 16%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+      z-index: 5;
+    }
+
+    .square {
+      width: 100px;
+      height: 100px;
+      border: 7px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.2rem;
+      font-family: 'Creepster', cursive;
+      color: white;
+      text-shadow: 4px 4px 0 #000;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 3%;
+      width: 100%;
+      height: 80px;
+      background: #802080;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6%;
+      z-index: 5;
+    }
+
+    .arrows { font-size: 3.8rem; color: #e0c040; animation: chaoticBlink 0.3s infinite alternate; }
+
+    .help-btn {
+      font-size: 3.6rem;
+      color: #e0c0e0;
+      background: #000;
+      padding: 12px 40px;
+      border: 7px solid #e0c040;
+      text-decoration: none;
+      animation: chaoticBlink 0.28s infinite alternate;
+    }
+
+    @keyframes chaoticBlink {
+      0%   { opacity: 1.0; filter: brightness(1.4); color: #e0c040; }
+      25%  { opacity: 0.08; filter: brightness(3.5); color: #ff0044; }
+      50%  { opacity: 0.95; filter: brightness(0.6); color: #e0c0e0; }
+      75%  { opacity: 0.04; filter: brightness(4.2); color: #802080; }
+      100% { opacity: 1.0; filter: brightness(2.0); color: #e0c040; }
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .popup.visible { display: flex; }
+
+    .popup-inner {
+      background: #100100;
+      border: 14px double #e0c040;
+      padding: 70px 140px;
+      font-size: 5rem;
+      color: #ff0044;
+      text-align: center;
+      -webkit-text-stroke: 1.8px #802080;
+      pointer-events: all;
+      box-shadow: 0 0 70px #e0c040;
+    }
+
+    #proceedPopup .popup-inner { animation: violent-shake 0.45s infinite; }
+
+    @keyframes violent-shake {
+      0%   { transform: translate(2px, 2px) rotate(0deg); }
+      10%  { transform: translate(-2px, -3px) rotate(-2deg); }
+      20%  { transform: translate(-4px, 1px) rotate(2deg); }
+      30%  { transform: translate(4px, 3px) rotate(0deg); }
+      40%  { transform: translate(2px, -2px) rotate(-2deg); }
+      50%  { transform: translate(-2px, 3px) rotate(2deg); }
+      60%  { transform: translate(-5px, 2px) rotate(0deg); }
+      70%  { transform: translate(5px, -2px) rotate(-2deg); }
+      80%  { transform: translate(-2px, -2px) rotate(2deg); }
+      90%  { transform: translate(2px, 3px) rotate(0deg); }
+      100% { transform: translate(2px, -3px) rotate(-2deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="custom-cursor" id="cursor"></div>
+
+  <div class="eyes">
+    <!-- Replace with YOUR DIRECT ImgBB link (e.g. https://i.ibb.co/XXXXXX/eyes.png) -->
+    <img src="https://i.ibb.co/RGRmvxSg/eyes.png" alt="Eyes with beams" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 200\"><circle cx=\"100\" cy=\"100\" r=\"80\" fill=\"white\" stroke=\"black\" stroke-width=\"14\"/><circle cx=\"320\" cy=\"100\" r=\"80\" fill=\"white\" stroke=\"black\" stroke-width=\"14\"/><circle cx=\"100\" cy=\"100\" r=\"40\" fill=\"black\"/><circle cx=\"320\" cy=\"100\" r=\"40\" fill=\"black\"/></svg>';">
+  </div>
+
+  <div class="loading-bar"></div>
+
+  <div class="marquee-text" id="marquee">
+    THIS IS LOADING, WAIT PLEASE. YOU CAN START GAME WHEN YOU SEE HERE 
+    <span class="highlight">THIS LINK</span>
+  </div>
+
+  <div class="color-squares">
+    <div class="square" style="background:#608040">E</div>
+    <div class="square" style="background:#80a060"></div>
+    <div class="square" style="background:#802080">9</div>
+    <div class="square" style="background:#e0c040"></div>
+    <div class="square" style="background:#000"></div>
+    <div class="square" style="background:#e0c0e0">L</div>
+  </div>
+
+  <div class="footer">
+    <div class="arrows"><<<<<</div>
+    <a href="https://archive.org/" target="_blank" class="help-btn">HELP</a>
+  </div>
+
+  <div class="popup" id="nowPlayPopup">
+    <div class="popup-inner">now play</div>
+  </div>
+
+  <div class="popup" id="proceedPopup">
+    <div class="popup-inner" id="proceedBtn">Proceed to NXT LVL</div>
+  </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+
+    const marquee = document.getElementById('marquee');
+    const nowPlayPopup = document.getElementById('nowPlayPopup');
+    const proceedPopup = document.getElementById('proceedPopup');
+    const proceedBtn = document.getElementById('proceedBtn');
+
+    let linkClicked = false;
+
+    // Pause at ~40s to make "THIS LINK" visible in center-ish
+    setTimeout(() => {
+      marquee.style.animationPlayState = 'paused';
+      marquee.style.transform = 'translateX(-40%)'; // tweak this % if link not centered on your screen
+    }, 40000);
+
+    marquee.addEventListener('click', e => {
+      if (e.target.classList.contains('highlight') && !linkClicked) {
+        linkClicked = true;
+        nowPlayPopup.classList.add('visible');
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!nowPlayPopup.classList.contains('visible')) return;
+      const key = e.key.toUpperCase();
+      if (key === 'E' || key === 'L' || key === '9') {
+        nowPlayPopup.classList.remove('visible');
+        proceedPopup.classList.add('visible');
+      }
+    });
+
+    proceedBtn.addEventListener('click', () => {
+      window.location.href = 'Pg2.html';
+    });
+  </script>
+</body>
+</html>

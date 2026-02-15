@@ -1,0 +1,453 @@
+#Pg2.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PAGE 2 - WORST EVER</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fruktur&family=Nosifer&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      height: 100vh;
+      background: #ffffff;              /* white background */
+      color: #000;
+      font-family: 'Creepster', cursive;
+      overflow: hidden;
+      image-rendering: pixelated;
+      cursor: none;
+    }
+
+    /* Custom cursor – 120×40 px rectangle */
+    .custom-cursor {
+      position: fixed;
+      width: 120px;
+      height: 40px;
+      background: #e1c2e0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-30px, -15px);
+      mix-blend-mode: difference;
+      border: 5px solid #802080;
+      box-shadow: 0 0 25px #e0c040;
+      animation: wobble 1.4s infinite;
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: translate(-30px, -15px) rotate(0deg); }
+      50%      { transform: translate(-40px, -10px) rotate(8deg); }
+    }
+
+    /* Trail pieces (created in JS) */
+    .cursor-trail {
+      position: fixed;
+      width: 120px;
+      height: 40px;
+      background: #e1c2e0;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      opacity: 0;
+      border: 4px solid #802080;
+    }
+
+    .container {
+      position: relative;
+      height: 100%;
+      text-align: center;
+      padding: 2vh 4vw;
+    }
+
+    .top-text {
+      font-size: 5.2rem;
+      color: #ff69b4;
+      text-shadow: 0 0 20px #ff1493;
+      margin: 2vh 0;
+      letter-spacing: 6px;
+      animation: chaoticShake 0.6s infinite, randomColorFlash 2s infinite;
+    }
+
+    .add-credit {
+      font-size: 6rem;
+      color: #00bfff;
+      font-family: 'Fruktur', cursive;
+      text-shadow: 0 0 30px #00ffff;
+      margin-bottom: 1vh;
+      animation: chaoticShake 0.7s infinite, randomColorFlash 1.8s infinite;
+    }
+
+    .doll {
+      position: absolute;
+      top: 10%;
+      left: 20%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: auto;
+      image-rendering: pixelated;
+      z-index: 10;
+      animation: glitchDistort 0.9s infinite, pulseScale 1.5s infinite alternate;
+    }
+
+    @keyframes glitchDistort {
+      0%   { transform: translateX(-50%) skew(0deg, 0deg); filter: hue-rotate(0deg) brightness(1); }
+      15%  { transform: translateX(calc(-50% + 8px)) skew(10deg, -6deg); filter: hue-rotate(140deg) brightness(1.5); }
+      30%  { transform: translateX(calc(-50% - 10px)) skew(-12deg, 8deg); filter: hue-rotate(220deg) brightness(0.7); }
+      50%  { transform: translateX(-50%) skew(0deg, 0deg); filter: hue-rotate(0deg) brightness(1); }
+      100% { transform: translateX(-50%) skew(0deg, 0deg); filter: hue-rotate(0deg) brightness(1); }
+    }
+
+    .loading-bar {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 45px;
+      background: #000;
+      border: 6px solid #000;
+      box-shadow: 0 0 20px #333;
+      animation: flicker 1.2s infinite;
+    }
+
+    .loading-text {
+      position: absolute;
+      top: 29%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 2rem;
+      z-index: 5;
+      animation: randomColorFlash 2.5s infinite;
+    }
+
+      /* Light grey lorem ipsum block – now in background */
+    .lorem-block {
+      position: absolute;
+      top: 12%;
+      left: 70%;
+      transform: translate(-10%, -10%);
+      width: 80%;
+      max-width: 1000px;
+      background: #d3d3d3;
+      color: #2b0808;
+      font-family: 'courier', cursive, sans-serif;
+      font-size: 1.4rem;
+      padding: 5vh 7vw;
+      border: 8px dashed #808080;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.15);
+      z-index: -1;                      /* sent to background */
+      text-align: left;
+      line-height: 1.7;
+      opacity: 0.75;
+      backdrop-filter: blur(3px);       /* subtle blur for extra terrible feel */
+      animation: chaoticShake 2s infinite, randomColorFlash 5s infinite;
+    }
+
+
+    .question {
+      margin: 20vh 0 8vh;
+      font-size: 4rem;
+      color: #228b22;
+      text-shadow: 0 0 15px #00ff00;
+      line-height: 1.4;
+      animation: chaoticShake 0.8s infinite, randomColorFlash 3s infinite;
+    }
+
+    .answers {
+      display: flex;
+      justify-content: center;
+      gap: 20vw;
+      margin: 6vh 0;
+    }
+
+    .answer {
+      font-size: 5.5rem;
+      padding: 2vh 6vw;
+      background: transparent;
+      border: none;
+      color: #ff4500;
+      cursor: none;
+      text-shadow: 0 0 20px #ff8c00;
+      transition: all 0.3s;
+      animation: chaoticShake 1s infinite;
+    }
+
+    .answer:hover {
+      transform: scale(1.3) rotate(5deg);
+      text-shadow: 0 0 40px #ff4500;
+    }
+
+    .fart, .clean {
+      animation: randomFlash 1.8s infinite alternate, chaoticShake 0.9s infinite;
+    }
+
+    .bottom-bar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 90px;
+      background: linear-gradient(to right, #000, #228b22, #9932cc, #ffd700, #000, #e0c0e0);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      font-size: 3.8rem;
+      color: white;
+      text-shadow: 3px 3px 0 black;
+      animation: randomColorFlash 2.5s infinite;
+    }
+
+    .letters {
+      display: flex;
+      gap: 8px;
+    }
+
+    .letter {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Creepster', cursive;
+      border: 4px solid #000;
+      animation: chaoticShake 1.2s infinite;
+    }
+
+    .upcoming, .soon {
+      padding: 10px 30px;
+      font-size: 2.4rem;
+      animation: chaoticShake 1.1s infinite;
+    }
+
+    .fake-links {
+      position: absolute;
+      bottom: 12vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.8rem;
+      color: #00ffff;
+      display: flex;
+      gap: 6vw;
+    }
+
+    .fake-link {
+      cursor: none;
+      text-decoration: underline wavy #ff00aa;
+      animation: randomColorFlash 2.2s infinite;
+    }
+
+    /* Popups */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .popup.visible { display: flex; }
+
+    .popup-inner {
+      background: #000;
+      border: 12px double #ff1493;
+      padding: 8vh 12vw;
+      font-size: 6rem;
+      color: #ff69b4;
+      text-align: center;
+      font-family: 'Nosifer', cursive;
+      box-shadow: 0 0 60px #ff00aa;
+      max-width: 90%;
+      animation: chaoticShake 0.6s infinite, flicker 0.8s infinite;
+    }
+
+    .thumb {
+      font-size: 12rem;
+      color: #32cd32;
+      margin-bottom: 2vh;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes randomFlash {
+      0%   { opacity: 1; color: #ff4500; }
+      40%  { opacity: 0.2; color: #ffd700; }
+      70%  { opacity: 0.9; color: #ff1493; }
+      100% { opacity: 1; color: #ff4500; }
+    }
+
+    @keyframes chaoticShake {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      10%  { transform: translate(-8px, 5px) rotate(-6deg); }
+      20%  { transform: translate(9px, -6px) rotate(7deg); }
+      30%  { transform: translate(-5px, 7px) rotate(-5deg); }
+      40%  { transform: translate(6px, -7px) rotate(6deg); }
+      50%  { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+
+    @keyframes randomColorFlash {
+      0%   { color: #ff69b4; }
+      20%  { color: #00ffff; }
+      40%  { color: #ffff00; }
+      60%  { color: #ff4500; }
+      80%  { color: #9932cc; }
+      100% { color: #32cd32; }
+    }
+
+    @keyframes flicker {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.3; }
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.15); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor element -->
+  <div class="custom-cursor" id="cursor"></div>
+
+  <div class="container">
+    <div class="top-text">
+      BALANCE IS LOW<br>
+      <span class="add-credit">ADD CREDIT</span>
+    </div>
+
+    <img src="https://i.ibb.co/FbtxmvCK/doll.png" alt="Babydoll" class="doll">
+
+    <div class="loading-bar">
+      <div class="loading-text">Loading</div>
+    </div>
+
+    <div class="question">
+      YOU MUST ANWSER THESE GUESTIONS GORRECTLY
+    </div>
+
+    <div class="answers">
+      <div class="answer fart" id="fart">I FART</div>
+      <div class="answer clean" id="clean">I am CLEAN</div>
+    </div>
+
+    <div class="fake-links">
+      <span class="fake-link">photo with babydoll</span>
+      <span class="fake-link">add credit</span>
+      <span class="fake-link">soon</span>
+      <span class="fake-link">upcoming</span>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="letters">
+        <div class="letter" style="background:#228b22">E</div>
+        <div class="letter" style="background:#80a060"></div>
+        <div class="letter" style="background:#9932cc">9</div>
+        <div class="letter" style="background:#ffd700"></div>
+        <div class="letter" style="background:#000"></div>
+        <div class="letter" style="background:#e0c0e0">L</div>
+      </div>
+      <div class="upcoming">UPCOMING</div>
+      <div class="soon">SOON</div>
+    </div>
+  </div>
+
+  <!-- Light grey lorem ipsum block – now in background -->
+    <div class="lorem-block">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+      Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br>
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. <br>
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. <br>
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia. <br>
+      Deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. <br>
+      Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra. <br>
+      Estibulum convallis, purus sit amet fermentum.
+    </div>
+
+  <!-- Popups -->
+  <div class="popup" id="fartPopup">
+    <div class="popup-inner">fart again</div>
+  </div>
+
+  <div class="popup" id="cleanPopup">
+    <div class="popup-inner">
+      <div class="thumb">👍</div>
+      you are clean
+    </div>
+  </div>
+
+  <div class="popup" id="nxtLvlPopup">
+    <div class="popup-inner" id="nxtLvlBtn">nxt lvl</div>
+  </div>
+
+  <div class="popup" id="creditPopup">
+    <div class="popup-inner">add credit</div>
+  </div>
+
+  <script>
+    // Cursor + trail effect
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+
+      // Create 5 fading trail pieces
+      for (let i = 1; i <= 5; i++) {
+        setTimeout(() => {
+          const trail = document.createElement('div');
+          trail.className = 'cursor-trail';
+          trail.style.left = e.clientX + 'px';
+          trail.style.top  = e.clientY + 'px';
+          trail.style.opacity = (0.5 - i * 0.09);
+          trail.style.transform = `scale(${1 - i * 0.18}) rotate(${Math.random() * 15 - 7.5}deg)`;
+          document.body.appendChild(trail);
+          setTimeout(() => trail.remove(), 700);
+        }, i * 45);
+      }
+    });
+
+    // Fake links → add credit popup
+    document.querySelectorAll('.fake-link').forEach(el => {
+      el.addEventListener('click', () => {
+        const p = document.getElementById('creditPopup');
+        p.classList.add('visible');
+        setTimeout(() => p.classList.remove('visible'), 6000);
+      });
+    });
+
+    // I FART
+    document.getElementById('fart').addEventListener('click', () => {
+      const p = document.getElementById('fartPopup');
+      p.classList.add('visible');
+      setTimeout(() => {
+        p.classList.remove('visible');
+        showNxt();
+      }, 6000);
+    });
+
+    // I am CLEAN
+    document.getElementById('clean').addEventListener('click', () => {
+      const p = document.getElementById('cleanPopup');
+      p.classList.add('visible');
+      setTimeout(() => {
+        p.classList.remove('visible');
+        showNxt();
+      }, 6000);
+    });
+
+    function showNxt() {
+      const nxt = document.getElementById('nxtLvlPopup');
+      nxt.classList.add('visible');
+      nxt.style.pointerEvents = 'all';
+    }
+
+    document.getElementById('nxtLvlBtn').addEventListener('click', () => {
+      window.location.href = 'Pg3.html';
+    });
+  </script>
+</body>
+</html>
